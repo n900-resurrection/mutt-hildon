@@ -156,30 +156,30 @@ st.close()
 
 # Contacts: vCard parsing, learning from mail, suggestions.
 import contacts
-vc = ("BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Pavel Makalous\r\nTEL;TYPE=CELL:+420602311440\r\n"
-      "EMAIL;TYPE=INTERNET,HOME:pavel@example.cz\r\nEMAIL:p2@example.cz\r\nEND:VCARD\r\n"
+vc = ("BEGIN:VCARD\r\nVERSION:3.0\r\nFN:Test Person\r\nTEL;TYPE=CELL:+420000000000\r\n"
+      "EMAIL;TYPE=INTERNET,HOME:test@example.cz\r\nEMAIL:p2@example.cz\r\nEND:VCARD\r\n"
       "BEGIN:VCARD\r\nFN:Bez Mailu\r\nTEL:1\r\nEND:VCARD\r\n"
       "BEGIN:VCARD\r\nFN:Dlouh\xc3\xbd\r\n n\xc3\xa1zev\r\nEMAIL:d@x.cz\r\nEND:VCARD\r\n")
 book = contacts.parse_vcards(vc)
 check("vcard-count", len(book), 3)
-check("vcard-first", book[0], (u"Pavel Makalous", u"pavel@example.cz"))
+check("vcard-first", book[0], (u"Test Person", u"test@example.cz"))
 check("vcard-folded-name", book[2], (u"Dlouh\xfdn\xe1zev", u"d@x.cz"))
 check("vcard-missing-db", contacts.read_addressbook("/nonexistent/addressbook.db"), [])
 check("last-token", contacts.last_token("a@x.cz, Pav"), ("a@x.cz, ", "Pav"))
 check("last-token-single", contacts.last_token("Pav"), ("", "Pav"))
 st = store.Store(":memory:")
 st.upsert_headers([{"idx": 1, "message_id": "<m1>", "from": u"J", "subject": u"s", "date": u"d", "ts": 100,
-                    "from_raw": u"Jana Nov\xe1 <jana@firma.cz>"}])
+                    "from_raw": u"Alice Example <alice@example.cz>"}])
 st.addr_learn(u"Karel <karel@x.cz>", 200)
 st.addr_learn(u"anon@y.cz", 250)
-check("learn-sender", st.addr_search("jana"), [(u"Jana Nov\xe1", u"jana@firma.cz")])
+check("learn-sender", st.addr_search("alice"), [(u"Alice Example", u"alice@example.cz")])
 check("learn-recent-first", [a for n, a in st.addr_search("@")][0], u"anon@y.cz")
 st.addr_learn(u"anon@y.cz", 300)
 st.addr_learn(u"Anon Nym <anon@y.cz>", 300)
 check("learn-name-upgrade", st.addr_search("anon"), [(u"Anon Nym", u"anon@y.cz")])
 sug = contacts.suggest(st, book, "pav")
-check("suggest-book", [a for d, a in sug], [u"pavel@example.cz", u"p2@example.cz"])
-check("suggest-merge-dedupe", len(contacts.suggest(st, book + [(u"", u"jana@firma.cz")], "jana")), 1)
+check("suggest-book", [a for d, a in sug], [u"test@example.cz", u"p2@example.cz"])
+check("suggest-merge-dedupe", len(contacts.suggest(st, book + [(u"", u"alice@example.cz")], "alice")), 1)
 check("suggest-short", contacts.suggest(st, book, ""), [])
 st.close()
 
