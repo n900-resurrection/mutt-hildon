@@ -1,0 +1,17 @@
+# Python
+*.pyc
+*.pyo
+__pycache__/
+
+# Local mail data and credentials must never be committed
+*.db
+*.sqlite
+.muttrc
+.msmtp-password
+.mutt-hildon.conf
+
+# Editors and OS
+*~
+*.swp
+.vscode/
+.DS_Store
