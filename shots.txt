@@ -1,0 +1,13 @@
+# Scenario of the screenshots of mutt-hildon in the emulated desktop (scripts/emu-shots.sh; demo data of hildon-run.sh).
+# SECONDS ACTION [ARGS]. F4 = Menu. The popup menu of the emulator closes when an item is chosen (Escape and a tap outside do not close it, and the
+# Back button of the top bar would close the application): here "Settings" (x 226, y 340), and Back (760, 25) leaves the settings window again.
+18  shot list
+19  key F4
+23  shot menu
+24  click 226 340
+29  shot settings
+30  click 760 25
+32  shot list-again
+33  click 400 100
+41  shot message
+42  click 760 25
